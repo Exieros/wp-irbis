@@ -1,0 +1,15 @@
+{
+    "require": {
+        "amironov73/phpirbis": "dev-master",
+        "monolog/monolog": "^2.4"
+    },
+    "repositories": [
+        {
+        "type": "vcs",
+        "url": "https://github.com/amironov73/PhpIrbis.git"
+        }
+    ],
+    "config": {
+        "platform-check": false
+    }
+}
