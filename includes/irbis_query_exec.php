@@ -75,8 +75,18 @@ class Irbis_Web{
             $prms = new Irbis\SearchParameters();
             $prms->expression = $query;
             $prms->format = $type;
-            $prms->numberOfRecords = 5;
+            $prms->numberOfRecords = 7;
             $found = $this->connection->searchEx($prms);
+
+            foreach ($found as $k => $v) {
+                $fields = $this->connection->readRecord( $v->mfn )->fields;
+                foreach ($fields as $kk => $f) {
+                    if($f->tag == 903){
+                        $v->cipher = $f->value;
+                        break;
+                    }
+                }
+            }
         }
 
         /*

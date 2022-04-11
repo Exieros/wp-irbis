@@ -8,6 +8,7 @@
  */
 
 require_once __DIR__ . '/includes/api.php';
+require_once __DIR__ . '/includes/add_acf.php';
 define( 'WP_IRBIS_VERSION', '1.0.1' );
 
 function wp_irbis_admin_page_assets() {
