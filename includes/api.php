@@ -4,9 +4,10 @@ require_once 'irbis_query_exec.php';
 
 //Время жизни кеша для запросов к ирбису. Так как он не особо поворотливый, то ставим месяц.
 const IRBIS_QUERY_CACHE_LIFETIME = 60 * 60 * 24 * 30;
+const IRBIS_API_PREFIX = 'wp-irbis/v1';
 
 add_action( 'rest_api_init', function () {
-    register_rest_route( 'wp-irbis/v1', '/execute_query', [
+    register_rest_route( IRBIS_API_PREFIX, '/execute_query', [
         'methods' => 'POST',
         'callback' => 'execute_query',
         'permission_callback' => '__return_true',
@@ -17,7 +18,7 @@ add_action( 'rest_api_init', function () {
         ]
     ]);
 
-    register_rest_route( 'wp-irbis/v1', '/getRenderedBookDescription', [
+    register_rest_route( IRBIS_API_PREFIX, '/getRenderedBookDescription', [
         'methods' => 'POST',
         'callback' => 'getRenderedBookDescription',
         'permission_callback' => '__return_true',
@@ -26,7 +27,7 @@ add_action( 'rest_api_init', function () {
         ]
     ]);
 
-    register_rest_route( 'wp-irbis/v1', '/getkeys', [
+    register_rest_route( IRBIS_API_PREFIX, '/getkeys', [
         'methods' => 'POST',
         'callback' => 'getkeys',
         'permission_callback' => '__return_true',
@@ -36,7 +37,7 @@ add_action( 'rest_api_init', function () {
         ]
     ]);
 
-    register_rest_route( 'wp-irbis/v1', '/check_connection', array(
+    register_rest_route( IRBIS_API_PREFIX, '/check_connection', array(
         'methods' => 'GET',
         'callback' => 'check_connection',
         'permission_callback' => '__return_true',
