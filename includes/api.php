@@ -2,6 +2,9 @@
 
 require_once 'irbis_query_exec.php';
 
+//Время жизни кеша для запросов к ирбису. Так как он не особо поворотливый, то ставим месяц.
+const IRBIS_QUERY_CACHE_LIFETIME = 60 * 60 * 24 * 30;
+
 add_action( 'rest_api_init', function () {
     register_rest_route( 'wp-irbis/v1', '/execute_query', [
         'methods' => 'POST',
@@ -74,6 +77,15 @@ function create_instance($opts){
 }
 
 function execute_query($data){
+    $md5 = md5( json_encode($data) );
+    //delete_transient($md5);
+    $cache = get_transient( $md5 );
+
+    if( $cache ){
+        $cache['cached'] = true;
+        return $cache;
+    }
+
     $opts = get_irbis_options();
     if ( !check_keys( $opts, ['address', 'port', 'login', 'pass', 'db']) ) {
         return [
@@ -82,7 +94,14 @@ function execute_query($data){
         ];
     }
     $irbis_web = create_instance($opts);
-    return $irbis_web->searchQueryToIrbis($data['query'], $data['db'], $data['type']);
+    $response = $irbis_web->searchQueryToIrbis($data['query'], $data['db'], $data['type']);
+
+    //Сохраняем кеш при условии, что в ответе есть найденые результаты.
+    if( key_exists('results', $response) && count($response['results']) ){
+        set_transient( $md5, $response, IRBIS_QUERY_CACHE_LIFETIME);
+    }
+
+    return $response;
 }
 
 function getRenderedBookDescription($data){
