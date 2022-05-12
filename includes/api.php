@@ -77,14 +77,12 @@ function create_instance($opts){
 }
 
 function execute_query($data){
-    $md5 = md5( serialize($data) );
+    $md5 = md5($data['query'] . $data['db'] . $data['type'] );
 
     ////delete_transient($md5);
     $cache = get_transient( $md5 );
 
     if( $cache ){
-        $cache['data'] = serialize( $data );
-        $cache['md5'] = $md5;
         $cache['cached'] = true;
         return $cache;
     }
