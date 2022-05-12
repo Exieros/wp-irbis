@@ -78,7 +78,7 @@ function create_instance($opts){
 
 function execute_query($data){
     $md5 = md5( json_encode($data) );
-    ///delete_transient($md5);
+    //delete_transient($md5);
     $cache = get_transient( $md5 );
 
     if( $cache ){
