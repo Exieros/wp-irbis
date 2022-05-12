@@ -83,7 +83,7 @@ function execute_query($data){
     $cache = get_transient( $md5 );
 
     if( $cache ){
-        $cache['data'] = json_encode( $data );
+        $cache['data'] = serialize( $data );
         $cache['md5'] = $md5;
         $cache['cached'] = true;
         return $cache;
